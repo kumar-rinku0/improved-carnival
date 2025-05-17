@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
-import type { NavItem } from '@/config/nav';
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
+import type { NavItem } from "@/config/nav";
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@/components/ui/collapsible';
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -19,11 +19,11 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 
 export function NavMain({
   items,
-  activePath = '/',
+  activePath = "/",
 }: {
   items: NavItem[];
   activePath: string;
@@ -56,7 +56,10 @@ export function NavMain({
                     <SidebarMenuSub>
                       {item.items?.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild isActive={true}>
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={activePath === subItem.url}
+                          >
                             <Link href={subItem.url}>{subItem.title}</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
