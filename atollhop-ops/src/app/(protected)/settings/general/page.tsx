@@ -8,11 +8,32 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Eye, EyeOff } from "lucide-react";
+import { Label } from "@/components/ui/label";
+
+type ShowPasswordProp = {
+  showOld: boolean;
+  showNew: boolean;
+  showConfirm: boolean;
+};
 
 export default function General() {
-  const [showOld, setShowOld] = useState(false);
-  const [showNew, setShowNew] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [showPassword, setShowPassword] = useState<ShowPasswordProp>({
+    showOld: false,
+    showNew: false,
+    showConfirm: false,
+  });
+  const handleUpdateShowPassword = (type: keyof ShowPasswordProp) => {
+    setShowPassword((prev) => ({
+      ...prev,
+      [type]: !prev[type],
+    }));
+  };
+  const handlePasswordSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const obj = Object.fromEntries(formData.entries());
+    console.log("Form Data:", obj);
+  };
 
   return (
     <div className="p-6">
@@ -36,7 +57,7 @@ export default function General() {
       </div>
 
       <Tabs defaultValue="general" className="w-full">
-        <TabsList className="bg-muted rounded-lg p-1">
+        <TabsList>
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="security">Password & security</TabsTrigger>
           <TabsTrigger value="notifications">
@@ -51,9 +72,9 @@ export default function General() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                <label htmlFor="displayName" className="text-sm font-medium">
+                <Label htmlFor="displayName" className="text-sm font-medium">
                   Display Name *
-                </label>
+                </Label>
                 <Input
                   id="displayName"
                   defaultValue="Omar Riad"
@@ -63,9 +84,9 @@ export default function General() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4">
-                <label htmlFor="email" className="text-sm font-medium">
+                <Label htmlFor="email" className="text-sm font-medium">
                   Email Address *
-                </label>
+                </Label>
                 <Input
                   id="email"
                   defaultValue="Example@email.com"
@@ -82,73 +103,90 @@ export default function General() {
             <CardHeader>
               <CardTitle>Password & Security</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="oldPassword" className="text-sm font-medium">
-                  Old Password *
-                </label>
-                <div className="relative">
-                  <Input
-                    id="oldPassword"
-                    type={showOld ? "text" : "password"}
-                    className="pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowOld(!showOld)}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-                  >
-                    {showOld ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
+            <CardContent>
+              <form onSubmit={handlePasswordSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="oldPassword" className="text-sm font-medium">
+                    Old Password *
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="oldPassword"
+                      name="oldPassword"
+                      type={showPassword.showOld ? "text" : "password"}
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleUpdateShowPassword("showOld")}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    >
+                      {showPassword.showOld ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <label htmlFor="newPassword" className="text-sm font-medium">
-                  New Password *
-                </label>
-                <div className="relative">
-                  <Input
-                    id="newPassword"
-                    type={showNew ? "text" : "password"}
-                    className="pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowNew(!showNew)}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-                  >
-                    {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword" className="text-sm font-medium">
+                    New Password *
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="newPassword"
+                      name="newPassword"
+                      type={showPassword.showNew ? "text" : "password"}
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleUpdateShowPassword("showNew")}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    >
+                      {showPassword.showNew ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <label
-                  htmlFor="confirmPassword"
-                  className="text-sm font-medium"
-                >
-                  Confirm Password *
-                </label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    type={showConfirm ? "text" : "password"}
-                    className="pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirm(!showConfirm)}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="confirmPassword"
+                    className="text-sm font-medium"
                   >
-                    {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
+                    Confirm Password *
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type={showPassword.showConfirm ? "text" : "password"}
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleUpdateShowPassword("showConfirm")}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    >
+                      {showPassword.showConfirm ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <Button className="mt-4" variant="default">
-                Reset password
-              </Button>
+                <Button className="mt-4" variant="default">
+                  Reset password
+                </Button>
+              </form>
             </CardContent>
           </Card>
         </TabsContent>

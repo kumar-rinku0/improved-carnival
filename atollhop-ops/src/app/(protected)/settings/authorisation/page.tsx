@@ -6,23 +6,12 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogClose,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle, PlusCircle } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import AddRole from "@/components/settings/authorisation/addrole";
 
 const roles = [
   {
@@ -58,7 +47,7 @@ const roles = [
 ];
 
 const Authorisation = () => {
-  const permissionsList = ["Create", "Read", "Update", "Delete"];
+  // const permissionsList = ["Create", "Read", "Update", "Delete"];
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -71,83 +60,7 @@ const Authorisation = () => {
             <Button variant="outline">+ Create a new role</Button>
           </DialogTrigger>
           <DialogContent>
-            <form
-              className="space-y-4 mt-4 bg-white rounded"
-              // onSubmit={handleSubmit}
-            >
-              <DialogHeader>
-                <DialogTitle>Create a new role</DialogTitle>
-                <DialogDescription>
-                  Configure permissions for the new role.
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="space-y-4">
-                <div className="flex flex-col gap-2">
-                  <Label>Name</Label>
-                  <Input placeholder="Permission Name" />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Label>Description</Label>
-                  <Input placeholder="Describe the permission" />
-                </div>
-
-                <div>
-                  <Label className="mb-2 block">Permissions</Label>
-                  <Tabs defaultValue="Schedules">
-                    <TabsList className="mb-3">
-                      {[
-                        "Routes",
-                        "Schedules",
-                        "Trips",
-                        "Bookings",
-                        "Settings",
-                      ].map((tab) => (
-                        <TabsTrigger key={tab} value={tab}>
-                          {tab}
-                        </TabsTrigger>
-                      ))}
-                    </TabsList>
-                    {[
-                      "Routes",
-                      "Schedules",
-                      "Trips",
-                      "Bookings",
-                      "Settings",
-                    ].map((tab) => (
-                      <TabsContent key={tab} value={tab}>
-                        <div className="grid grid-cols-2 gap-4 mt-2">
-                          {permissionsList.map((perm) => (
-                            <div
-                              key={perm}
-                              className="flex items-center space-x-2"
-                            >
-                              <Checkbox
-                                id={perm}
-                                // checked={selectedPermissions.includes(perm)}
-                                // onCheckedChange={() => togglePermission(perm)}
-                              />
-                              <Label htmlFor={perm}>
-                                {perm}
-                                <span className="text-gray-500">{tab}</span>
-                              </Label>
-                            </div>
-                          ))}
-                        </div>
-                      </TabsContent>
-                    ))}
-                  </Tabs>
-                </div>
-              </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button type="button" variant="outline">
-                    Cancel
-                  </Button>
-                </DialogClose>
-                <Button type="submit">Next</Button>
-              </DialogFooter>
-            </form>
+            <AddRole />
           </DialogContent>
         </Dialog>
       </div>
